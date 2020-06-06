@@ -1,4 +1,4 @@
-syms f(q1, q2, q3, q4, q5, q6) 6;
+syms q1 q2 q3 q4 q5 q6
 
 tbl = [
     [0 128     0      90 ];   %1
@@ -11,7 +11,7 @@ tbl = [
 
 wtcp = [-471 -782.73 201.03 -179.88 -24.48 -158];
 
-q = [0 0 0 0 0 0];
+q = [1 1 1 1 1 1];
 qtest = [-109.3, -124.75, -100.81, -14.74, 76.24, -27.91];
 qsim = [q1, q2, q3, q4, q5, q6];
 
@@ -24,38 +24,44 @@ while(true)
     A56 = TransMatrix(6, qsim(6), tbl);
 
     A06 = A01 * A12 * A23 * A34 * A45 * A56;
-
-    A = double(subs(A06, qsim, qtest));
-
-    %disp(A06);
-
-    %A = subs(A06, qsim, qtest);
-    %A2 = simplify(A);
     
-    wtcp_new = [GetPos(A) GetAng(A)];
+    disp(A06);
     
-    disp(wtcp_new);
+    wtpc_new_sym = [GetPos(A06) GetAngSym(A06)];
+    
+    ASubs = double(subs(A06, qsim, q));
+    wtcp_new = [GetPos(ASubs) GetAng(ASubs)];
+
+    if ShouldStop(wtcp_new - wtcp)
+        break;
+    end
+    
+    q = UpdateQ(q, wtpc_new_sym, (wtcp_new - wtcp));
     
     return;
-    
-    %if ShouldStop(wtcp_new - wtcp)
-    %    break;
-    %end
-    
-    %q = UpdateQ(q, (wtcp_new - wtcp));
 end
 
-%disp("Position:")
-%disp(q(1:3));
+disp("Position:")
+disp(q(1:3));
 
-%disp("Rotation:")
-%disp(q(4:6));
+disp("Rotation:")
+disp(q(4:6));
 
 %% HELPER FUNCTIONS
 
 function [cancel] = ShouldStop(error)
-    for i = 1, size(error, 2)
+    for i = 1 : 3
+        disp(error(i));
         if error(i) > 3
+            cancel = false;
+            
+            return
+        end
+    end
+    
+    for i = 4 : 6
+        disp(error(i));
+        if error(i) > 3 %3/180*pi
             cancel = false;
             
             return
@@ -65,20 +71,24 @@ function [cancel] = ShouldStop(error)
     cancel = true;
 end
 
-function [qNew] = UpdateQ(q, dif)
+function [qNew] = UpdateQ(q, wtpc_sym, dif)
+    disp("wtpc_sym");
+    disp(wtpc_sym);
+
+    syms q1 q2 q3 q4 q5 q6
     fq = [ 
         [1 0 0 0 0         0                ];
         [0 1 0 0 0         0                ];
         [0 0 1 0 0         0                ];
-        [0 0 0 0 -sind(q6) cosd(q6)*cosd(q5)];
-        [0 0 0 0 cosd(q6)  sind(q6)*cosd(q5)];
-        [0 0 0 1 0         -sind(q5)        ];
+        [0 0 0 0 -sin(wtpc_sym(6)) cos(wtpc_sym(6))*cos(wtpc_sym(5))];
+        [0 0 0 0 cos(wtpc_sym(6))  sin(wtpc_sym(6))*cos(wtpc_sym(5))];
+        [0 0 0 1 0         -sin(wtpc_sym(5))        ];
     ] * dif';
 
-    %disp(fq);
+    disp(fq);
 
     dfq = jacobian(fq, [q1, q2, q3, q4, q5, q6]);
     
-    %disp(dfq);
-    %disp(inv(dfq));
+    disp(dfq);
+    disp(inv(dfq));
 end
