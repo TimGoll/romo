@@ -16,7 +16,8 @@ A56 = TransMatrix(6, deg2rad(-27.91), tbl);
 
 A06 = A01 * A12 * A23 * A34 * A45 * A56;
 
-disp("Position:")
+POS=GetPos(A06);
+disp("Position:",num2str(POS(1)));
 disp(GetPos(A06));
 
 disp("Rotation:")
