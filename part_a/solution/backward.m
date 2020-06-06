@@ -1,4 +1,4 @@
-syms q1 q2 q3 q4 q5 q6;
+syms f(q1, q2, q3, q4, q5, q6) 6;
 
 tbl = [
     [0 128     0      90 ];   %1
@@ -12,8 +12,8 @@ tbl = [
 wtcp = [-471 -782.73 201.03 -179.88 -24.48 -158];
 
 q = [0 0 0 0 0 0];
-qtest = [-109.3 -124.75 -100.81 -14.74 76.24 -27.91];
-qsim = [q1 q2 q3 q4 q5 q6];
+qtest = [-109.3, -124.75, -100.81, -14.74, 76.24, -27.91];
+qsim = [q1, q2, q3, q4, q5, q6];
 
 while(true)
     A01 = TransMatrix(1, qsim(1), tbl);
@@ -25,11 +25,14 @@ while(true)
 
     A06 = A01 * A12 * A23 * A34 * A45 * A56;
 
+    A = double(subs(A06, qsim, qtest));
+
     %disp(A06);
 
-    subs(A06, qsim, qtest);
+    %A = subs(A06, qsim, qtest);
+    %A2 = simplify(A);
     
-    wtcp_new = [GetPos(A06) GetAngSym(A06)];
+    wtcp_new = [GetPos(A) GetAng(A)];
     
     disp(wtcp_new);
     
