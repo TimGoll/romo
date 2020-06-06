@@ -11,7 +11,7 @@ tbl = [
 
 wtcp = [-471 -782.73 201.03 -179.88 -24.48 -158];
 
-q = [1 1 1 1 1 1];
+q = [45 45 45 45 45 45];
 qtest = [-109.3, -124.75, -100.81, -14.74, 76.24, -27.91];
 qsim = [q1, q2, q3, q4, q5, q6];
 
@@ -25,8 +25,6 @@ while(true)
 
     A06 = A01 * A12 * A23 * A34 * A45 * A56;
     
-    disp(A06);
-    
     wtpc_new_sym = [GetPos(A06) GetAngSym(A06)];
     
     ASubs = double(subs(A06, qsim, q));
@@ -36,7 +34,9 @@ while(true)
         break;
     end
     
-    q = UpdateQ(q, wtpc_new_sym, (wtcp_new - wtcp));
+    q = UpdateQ(q, wtpc_new_sym, (wtpc_new_sym - wtcp));
+    
+    disp(q);
     
     return;
 end
@@ -51,7 +51,6 @@ disp(q(4:6));
 
 function [cancel] = ShouldStop(error)
     for i = 1 : 3
-        disp(error(i));
         if error(i) > 3
             cancel = false;
             
@@ -60,7 +59,6 @@ function [cancel] = ShouldStop(error)
     end
     
     for i = 4 : 6
-        disp(error(i));
         if error(i) > 3 %3/180*pi
             cancel = false;
             
@@ -72,23 +70,27 @@ function [cancel] = ShouldStop(error)
 end
 
 function [qNew] = UpdateQ(q, wtpc_sym, dif)
-    disp("wtpc_sym");
-    disp(wtpc_sym);
-
     syms q1 q2 q3 q4 q5 q6
+    
+    qsim = [q1, q2, q3, q4, q5, q6];
+    
     fq = [ 
-        [1 0 0 0 0         0                ];
-        [0 1 0 0 0         0                ];
-        [0 0 1 0 0         0                ];
+        [1 0 0 0 0                 0                                ];
+        [0 1 0 0 0                 0                                ];
+        [0 0 1 0 0                 0                                ];
         [0 0 0 0 -sin(wtpc_sym(6)) cos(wtpc_sym(6))*cos(wtpc_sym(5))];
         [0 0 0 0 cos(wtpc_sym(6))  sin(wtpc_sym(6))*cos(wtpc_sym(5))];
-        [0 0 0 1 0         -sin(wtpc_sym(5))        ];
+        [0 0 0 1 0                 -sin(wtpc_sym(5))                ];
     ] * dif';
 
-    disp(fq);
-
     dfq = jacobian(fq, [q1, q2, q3, q4, q5, q6]);
+    dfqi = inv(dfq);
     
-    disp(dfq);
-    disp(inv(dfq));
+    part1 = double(subs(dfqi, qsim, q));
+    part2 = double(subs(fq, qsim, q));
+    
+    disp(part1);
+    disp(part2);
+    
+    qNew = q - part1 * part2;
 end
