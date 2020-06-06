@@ -1,3 +1,5 @@
+syms q1 q2 q3 q4 q5 q6;
+
 tbl = [
     [0 128     0      90 ];   %1
     [0 0       -612   0  ];   %2
@@ -10,37 +12,41 @@ tbl = [
 wtcp = [-471 -782.73 201.03 -179.88 -24.48 -158];
 
 q = [0 0 0 0 0 0];
-
-UpdateQ(q, wtcp);
-
-return;
+qtest = [-109.3 -124.75 -100.81 -14.74 76.24 -27.91];
+qsim = [q1 q2 q3 q4 q5 q6];
 
 while(true)
-    A01 = TransMatrix(1, q(1), tbl);
-    A12 = TransMatrix(2, q(2), tbl);
-    A23 = TransMatrix(3, q(3), tbl);
-    A34 = TransMatrix(4, q(4), tbl);
-    A45 = TransMatrix(5, q(5), tbl);
-    A56 = TransMatrix(6, q(6), tbl);
+    A01 = TransMatrix(1, qsim(1), tbl);
+    A12 = TransMatrix(2, qsim(2), tbl);
+    A23 = TransMatrix(3, qsim(3), tbl);
+    A34 = TransMatrix(4, qsim(4), tbl);
+    A45 = TransMatrix(5, qsim(5), tbl);
+    A56 = TransMatrix(6, qsim(6), tbl);
 
     A06 = A01 * A12 * A23 * A34 * A45 * A56;
 
-    wtcp_new = [GetPos(A06) GetAng(A06)];
+    %disp(A06);
+
+    subs(A06, qsim, qtest);
     
-    if ShouldStop(wtcp_new - wtcp)
-        break;
-    end
+    wtcp_new = [GetPos(A06) GetAngSym(A06)];
     
-    q = UpdateQ(q, (wtcp_new - wtcp));
+    disp(wtcp_new);
     
-    break;
+    return;
+    
+    %if ShouldStop(wtcp_new - wtcp)
+    %    break;
+    %end
+    
+    %q = UpdateQ(q, (wtcp_new - wtcp));
 end
 
-disp("Position:")
-disp(q(1:3));
+%disp("Position:")
+%disp(q(1:3));
 
-disp("Rotation:")
-disp(q(4:6));
+%disp("Rotation:")
+%disp(q(4:6));
 
 %% HELPER FUNCTIONS
 
@@ -57,7 +63,6 @@ function [cancel] = ShouldStop(error)
 end
 
 function [qNew] = UpdateQ(q, dif)
-    syms q1 q2 q3 q4 q5 q6;
     fq = [ 
         [1 0 0 0 0         0                ];
         [0 1 0 0 0         0                ];
@@ -67,10 +72,10 @@ function [qNew] = UpdateQ(q, dif)
         [0 0 0 1 0         -sind(q5)        ];
     ] * dif';
 
-    disp(fq);
+    %disp(fq);
 
     dfq = jacobian(fq, [q1, q2, q3, q4, q5, q6]);
     
-    disp(dfq);
-    disp(inv(dfq));
+    %disp(dfq);
+    %disp(inv(dfq));
 end
