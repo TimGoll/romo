@@ -11,9 +11,6 @@ wtcp = [-471 -782.73 201.03 -179.88 -24.48 -158];
 
 q = [0 0 0 0 0 0];
 
-UpdateQ(q, wtcp);
-
-return;
 
 while(true)
     A01 = TransMatrix(1, q(1), tbl);
