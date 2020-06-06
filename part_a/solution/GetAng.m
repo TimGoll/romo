@@ -1,3 +1,3 @@
 function [C] = GetAng(A)
-    C = [rad2deg(A(3, 1)) rad2deg(A(2, 2)) rad2deg(A(3, 1))];
+    C = [rad2deg(atan2(A(2,1),A(1,1))) rad2deg(asin(-A(3,1))) rad2deg(atan2(A(3,2),A(3,3)))];
 end
