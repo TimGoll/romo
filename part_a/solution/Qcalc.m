@@ -2,7 +2,7 @@ function [Qcalc] = Qcalc(Wsoll,Qstart,tbl )
 
 Wsoll(4:6) = [deg2rad(Wsoll(4)) deg2rad(Wsoll(5)) deg2rad(Wsoll(6))];
 
-syms q1 q2 q3 q4 q5 q6
+syms q1 q2 q3 q4 q5 q6 real
 
 q = [q1 q2 q3 q4 q5 q6];
  for i = 1:6
@@ -18,8 +18,9 @@ q = [q1 q2 q3 q4 q5 q6];
  end
  
  A06 = T(:,:,1)*T(:,:,2)*T(:,:,3)*T(:,:,4)*T(:,:,5)*T(:,:,6);
- 
-  disp(A06);
+ A062 = double(subs(A06,q,Qstart.'));
+%   disp(A062);
+%   disp(A06);
  
  X = A06(1,4);
  Y = A06(2,4);
@@ -30,9 +31,9 @@ q = [q1 q2 q3 q4 q5 q6];
  
  W = [X Y Z Phi Theta Gamma];
  
- disp(W);
+%  disp(W);
 
- Wist = double(subs(W, q, Qstart'));
+ Wist = double(subs(W, q, Qstart.'));
  
  disp(Wist);
  disp(Wsoll);
@@ -40,12 +41,14 @@ q = [q1 q2 q3 q4 q5 q6];
  diff = W - Wsoll;
  diff2 = Wist - Wsoll;
  
- 
+
  if ShouldStop(diff2)
-        disp("Shouldstop löst aus")
+        disp("Shouldstop")
      return
  end
- disp(diff);
+%  disp(diff);
+ diff = diff.';
+%  disp(diff);
  disp(diff2);
  fq = [ 
         [1 0 0 0 0              0                  ];
@@ -55,16 +58,16 @@ q = [q1 q2 q3 q4 q5 q6];
         [0 0 0 0 cos(W(6))      sin(W(6))*cos(W(5))];
         [0 0 0 1 0              -sin(W(5))         ];
     ];
-disp(fq);
-fq = fq * diff';
-disp(fq);
+% disp(fq);
+fq = real(fq * diff);
+% disp(fq);
 
- J = jacobian(fq, q);
- disp(J);
- J = double(subs(J, q, Qstart'));
- fq = double(subs(fq, q, Qstart'));
- disp(fq);
- disp (J);
+ J = real(jacobian(fq, q));
+%  disp(J);
+ J = double(subs(J, q, Qstart.'));
+ fq = double(subs(fq, q, Qstart.'));
+%  disp(fq);
+%  disp (J);
 %  J2 = inv(J);
 %  disp(J2);
 %  v = (J2*fq);
@@ -73,9 +76,9 @@ disp(fq);
  
  x = mldivide(J,fq);
  
- disp(x);
+%  disp(x);
 
  Qcalc = -x + Qstart;
  
- disp(Qcalc)
+ disp(Qcalc);
 end
