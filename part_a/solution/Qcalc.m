@@ -19,7 +19,7 @@ q = [q1 q2 q3 q4 q5 q6];
  
  A06 = T(:,:,1)*T(:,:,2)*T(:,:,3)*T(:,:,4)*T(:,:,5)*T(:,:,6);
  
-%  disp(A06);
+  disp(A06);
  
  X = A06(1,4);
  Y = A06(2,4);
@@ -30,22 +30,23 @@ q = [q1 q2 q3 q4 q5 q6];
  
  W = [X Y Z Phi Theta Gamma];
  
-%  disp(W);
+ disp(W);
 
  Wist = double(subs(W, q, Qstart'));
  
-%  disp(Wist);
-%  disp(Wsoll);
+ disp(Wist);
+ disp(Wsoll);
  
  diff = W - Wsoll;
  diff2 = Wist - Wsoll;
+ 
  
  if ShouldStop(diff2)
         disp("Shouldstop löst aus")
      return
  end
-%  disp(diff);
- 
+ disp(diff);
+ disp(diff2);
  fq = [ 
         [1 0 0 0 0              0                  ];
         [0 1 0 0 0              0                  ];
@@ -53,15 +54,17 @@ q = [q1 q2 q3 q4 q5 q6];
         [0 0 0 0 -sin(W(6))     cos(W(6))*cos(W(5))];
         [0 0 0 0 cos(W(6))      sin(W(6))*cos(W(5))];
         [0 0 0 1 0              -sin(W(5))         ];
-    ] * diff';
-
-% disp(fq);
+    ];
+disp(fq);
+fq = fq * diff';
+disp(fq);
 
  J = jacobian(fq, q);
+ disp(J);
  J = double(subs(J, q, Qstart'));
  fq = double(subs(fq, q, Qstart'));
-%  disp(fq);
-%  disp (J);
+ disp(fq);
+ disp (J);
 %  J2 = inv(J);
 %  disp(J2);
 %  v = (J2*fq);
@@ -70,9 +73,9 @@ q = [q1 q2 q3 q4 q5 q6];
  
  x = mldivide(J,fq);
  
-%  disp(x);
+ disp(x);
 
  Qcalc = -x + Qstart;
  
-%  disp(Qcalc)
+ disp(Qcalc)
 end

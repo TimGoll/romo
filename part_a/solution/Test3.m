@@ -19,14 +19,15 @@ Qstart =deg2rad(Qstart);
 disp(Qstart);
 wtcptest = [-471 -782.73 201.03 -179.88 -24.48 -158];
 
-Qnew=abs(Qcalc(wtcptest,Qstart,tbl));
+Qnew=Qcalc(wtcptest,Qstart,tbl);
 
 disp(Qnew);
-while not(isequal(Qstart,Qnew))
+while 0%not(isequal(Qstart,Qnew))
+     disp(not(isequal(Qstart,Qnew)))
 Qstart=Qnew;
-Qnew=abs(Qcalc(wtcptest,Qstart,tbl));
+Qnew=Qcalc(wtcptest,Qstart,tbl);
 disp(Qnew);
 end
-Disp(rad2deg(Qnew));
+disp(rad2deg(Qnew));
 W=fk(tbl,Qnew);
 Disp(W);
