@@ -11,23 +11,28 @@ tbl = [
     [0 92.2    0      0  ];   %6
 ];
 
-tbl(:,4) = deg2rad(tbl(:,4));
+tbl(:, 4) = deg2rad(tbl(:, 4));
 Qtest = [-109.3, -124.75, -100.81, -14.74, 76.24, -27.91];
-Qstart = [-108,-124,-100,-14,76,-27].';
-Qstart =deg2rad(Qstart);
+Qstart = [-108, -124, -100, -14, 76, -27].';
+Qstart = deg2rad(Qstart);
 
 disp(Qstart);
 wtcptest = [-471 -782.73 201.03 -179.88 -24.48 -158];
 
-Qnew=(Qcalc(wtcptest,Qstart,tbl));
+Qnew=(Qcalc(wtcptest, Qstart, tbl));
 
 disp(Qnew);
-while not(isequal(Qstart,Qnew))
-     disp(not(isequal(Qstart,Qnew)))
-Qstart=Qnew;
-Qnew=Qcalc(wtcptest,Qstart,tbl);
-disp(Qnew);
+
+while not(isequal(Qstart, Qnew))
+    disp(not(isequal(Qstart, Qnew)))
+    
+    Qstart = Qnew;
+    
+    Qnew = Qcalc(wtcptest, Qstart, tbl);
+    
+    disp(Qnew);
 end
+
 disp(rad2deg(Qnew));
-W=fk(tbl,Qnew);
+W = fk(tbl, Qnew);
 disp(W);
