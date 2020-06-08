@@ -23,16 +23,6 @@ Qnew=(Qcalc(wtcptest, Qstart, tbl));
 
 disp(Qnew);
 
-while not(isequal(Qstart, Qnew))
-    disp(not(isequal(Qstart, Qnew)))
-    
-    Qstart = Qnew;
-    
-    Qnew = Qcalc(wtcptest, Qstart, tbl);
-    
-    disp(Qnew);
-end
-
 disp(rad2deg(Qnew));
 W = fk(tbl, Qnew);
 disp(W);
