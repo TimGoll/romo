@@ -1,8 +1,11 @@
-function [A] = TransMatrix(j, ang, tbl)
+%Berechnen der Transformationsmatrix am Gelenk j mit den Gelenkwinkeln ang
+%und den Denavit-Hartenberg Parametern DH
+
+function [A] = TransMatrix(j, ang, DH)
     A = [
-        [cosd(ang + tbl(j, 1))  -sind(ang + tbl(j, 1))*cosd(tbl(j, 4))  sind(ang + tbl(j, 1))*sind(tbl(j, 4))   tbl(j, 3)*cosd(ang + tbl(j, 1))];
-        [sind(ang + tbl(j, 1))  cosd(ang + tbl(j, 1))*cosd(tbl(j, 4))   -cosd(ang + tbl(j, 1))*sind(tbl(j, 4))  tbl(j, 3)*sind(ang + tbl(j, 1))];
-        [0                      sind(tbl(j, 4))                         cosd(tbl(j, 4))                         tbl(j, 2)                      ];
-        [0                      0                                       0                                       1                              ];
+        [cos(ang + DH(j, 1))  -sin(ang + DH(j, 1))*cos(DH(j, 4))  sin(ang + DH(j, 1))*sin(DH(j, 4))   DH(j, 3)*cos(ang + DH(j, 1))];
+        [sin(ang + DH(j, 1))  cos(ang + DH(j, 1))*cos(DH(j, 4))   -cos(ang + DH(j, 1))*sin(DH(j, 4))  DH(j, 3)*sin(ang + DH(j, 1))];
+        [0                    sin(DH(j, 4))                       cos(DH(j, 4))                       DH(j, 2)                    ];
+        [0                    0                                   0                                   1                           ];
     ];
 end
