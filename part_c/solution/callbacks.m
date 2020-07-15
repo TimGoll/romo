@@ -61,6 +61,9 @@ function [] = calculate(hObject, eventdata, handles)
     
     resetData(handle_in_p);
     resetData(handle_in_q);
+    
+    axes(handles.axes1);
+    roboplot(q_data);
 end
 
 function [] = home(hObject, eventdata, handles)

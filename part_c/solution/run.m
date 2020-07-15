@@ -1,6 +1,6 @@
 clc;
-close;
-clear All;
+close ALL;
+clear;
 
 disp("Creating UI.");
 
