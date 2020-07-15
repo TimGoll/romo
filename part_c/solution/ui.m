@@ -83,16 +83,20 @@ function pushbutton1_Callback(hObject, eventdata, handles)
 
 % --- Executes on button press in pushbutton2.
 function pushbutton2_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton2 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+%load the structure from the workspace
+    uiCallbacks = evalin('base', 'uiCallbacks');
+
+    % run the associated function
+    uiCallbacks.home(hObject, eventdata, handles);
 
 
 % --- Executes on button press in pushbutton3.
 function pushbutton3_Callback(hObject, eventdata, handles)
-% hObject    handle to pushbutton3 (see GCBO)
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
+%load the structure from the workspace
+    uiCallbacks = evalin('base', 'uiCallbacks');
+
+    % run the associated function
+    uiCallbacks.simulate(hObject, eventdata, handles);
 
 
 

@@ -5,7 +5,6 @@ clear
 close all
 
 %Denavit-Hartenberg Parameter
-
 DH = [
     [0 128     0      90 ];   %1
     [0 0       -612   0  ];   %2
@@ -19,12 +18,10 @@ DH(:,[1 4]) = deg2rad(DH(:,[1 4])); %Umrechnung in rad
 DH(:,[2 3]) = DH(:,[2 3])./1000;    %Umrechnung in m
 
 %Gelenkwinkel
-
 Q = [-109.3, -124.75, -100.81, -14.74, 76.24, -27.91];
 Q = deg2rad(Q);                     %Umrechnung in rad
 
 %Berechnung der Transformationsmatrix
-
 A01 = TransMatrix(1, Q(1), DH);
 A12 = TransMatrix(2, Q(2), DH);
 A23 = TransMatrix(3, Q(3), DH);
@@ -35,15 +32,12 @@ A56 = TransMatrix(6, Q(6), DH);
 A06 = A01 * A12 * A23 * A34 * A45 * A56;
 
 %Berechnung der Position des Endeffektors
-
 POS=GetPos((A06));
 
 %Berechnung der Orientierung des Endeffektors
-
 ANG=GetAng(A06);
 
 %Ausgabe der Ergebnisse
-
 disp("Position:");
 disp("X:"+num2str(POS(1)*1000,'%.2f')+" mm");
 disp("Y:"+num2str(POS(2)*1000,'%.2f')+" mm");

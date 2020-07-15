@@ -1,6 +1,8 @@
 uiCallbacks = struct;
 uiCallbacks.setup = @setup;
 uiCallbacks.calculate = @calculate;
+uiCallbacks.home = @home;
+uiCallbacks.simulate = @simulate;
 
 function [] = setup()
     ui;
@@ -49,13 +51,24 @@ function [] = calculate(hObject, eventdata, handles)
     [q_data, q_is_defined] = readData(handle_in_q);
 
     if p_is_defined
-        setData(handle_out_p, p_data);
+        q_data = round(backward(p_data), 2);
     elseif q_is_defined
-        setData(handle_out_q, q_data);
+        p_data = round(forward(q_data), 2);
     end
+    
+    setData(handle_out_p, p_data);
+    setData(handle_out_q, q_data);
     
     resetData(handle_in_p);
     resetData(handle_in_q);
+end
+
+function [] = home(hObject, eventdata, handles)
+    disp("Home todo");
+end
+
+function [] = simulate(hObject, eventdata, handles)
+    disp("simulate todo");
 end
 
 %% HELPER FUNCTIONS
