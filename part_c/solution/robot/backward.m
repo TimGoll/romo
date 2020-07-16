@@ -16,7 +16,7 @@ function [q] = backward(W)
     Qstart = [RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361)].';
     Qstart = deg2rad(Qstart);           %Umrechnung in rad
 
-    Wsoll = W';
+    Wsoll = W;
     Wsoll(1:3) = Wsoll(1 : 3) ./ 1000;      %Umrechnung in m
     Wsoll(4:6) = deg2rad(Wsoll(4 : 6));   %Umrechnung in rad
 
@@ -51,7 +51,7 @@ function [q] = backward(W)
         f = Wist - Wsoll;
 
         if ShouldStop((f))
-            q = Qstart;
+            q = mod(rad2deg(Qstart),360);
             
             break
         end

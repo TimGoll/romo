@@ -1,4 +1,4 @@
-function [A06] = forward(q)
+function p = forward(q)
 
     %Denavit-Hartenberg Parameter
     DH = [
@@ -24,5 +24,8 @@ function [A06] = forward(q)
     A56 = TransMatrix(6, q(6), DH);
 
     A06 = A01 * A12 * A23 * A34 * A45 * A56;
-
+    
+    p(1:3,1) = GetPos(A06)';
+    p(4:6,1) = GetAng(A06)';
+    
 end
