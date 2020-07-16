@@ -3,15 +3,68 @@ uiCallbacks.setup = @setup;
 uiCallbacks.calculate = @calculate;
 uiCallbacks.home = @home;
 uiCallbacks.simulate = @simulate;
+uiCallbacks.onload = @onload;
 
 function [] = setup()
     ui;
-    
-    home();
+end
+
+function [] = onload(hObject, eventdata, handles)
+    home(hObject, eventdata, handles);
 end
 
 function [] = calculate(hObject, eventdata, handles)
     % set up handle arrays
+    [handle_in_p, handle_in_q, handle_out_p, handle_out_q] = extractHandles(handles);
+
+    % read data
+    [p_data, p_is_defined] = readData(handle_in_p);
+    [q_data, q_is_defined] = readData(handle_in_q);
+
+    if p_is_defined
+        q_data = backward(p_data);
+    elseif q_is_defined
+        p_data = forward(q_data);
+    else
+        home(hObject, eventdata, handles);
+        
+        return;
+    end
+    
+    setData(handle_out_p, round(p_data, 2));
+    setData(handle_out_q, round(q_data, 2));
+    
+    resetData(handle_in_p);
+    resetData(handle_in_q);
+    
+    axes(handles.axes1);
+    roboplot(q_data);
+end
+
+function [] = home(hObject, eventdata, handles)
+    % set up handle arrays
+    [handle_in_p, handle_in_q, handle_out_p, handle_out_q] = extractHandles(handles);
+
+    q_data = zeros(6, 1);
+    p_data = forward(q_data);
+    
+    setData(handle_out_p, round(p_data, 2));
+    setData(handle_out_q, round(q_data, 2));
+
+    resetData(handle_in_p);
+    resetData(handle_in_q);
+    
+    axes(handles.axes1);
+    roboplot(q_data);
+end
+
+function [] = simulate(hObject, eventdata, handles)
+    disp("simulate todo");
+end
+
+%% HELPER FUNCTIONS
+
+function [handle_in_p, handle_in_q, handle_out_p, handle_out_q] = extractHandles(handles)
     handle_in_p = [
         handles.in_x
         handles.in_y
@@ -47,36 +100,7 @@ function [] = calculate(hObject, eventdata, handles)
         handles.out_q5
         handles.out_q6
     ];
-
-    % read data
-    [p_data, p_is_defined] = readData(handle_in_p);
-    [q_data, q_is_defined] = readData(handle_in_q);
-
-    if p_is_defined
-        q_data = round(backward(p_data), 2);
-    elseif q_is_defined
-        p_data = round(forward(q_data), 2);
-    end
-    
-    setData(handle_out_p, p_data);
-    setData(handle_out_q, q_data);
-    
-    resetData(handle_in_p);
-    resetData(handle_in_q);
-    
-    axes(handles.axes1);
-    roboplot(q_data);
 end
-
-function [] = home(hObject, eventdata, handles)
-    disp("Home todo");
-end
-
-function [] = simulate(hObject, eventdata, handles)
-    disp("simulate todo");
-end
-
-%% HELPER FUNCTIONS
 
 function [data, is_defined] = readData(tags)
     tag_size = size(tags, 1);

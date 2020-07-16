@@ -46,20 +46,25 @@ end
 
 % --- Executes just before ui is made visible.
 function ui_OpeningFcn(hObject, eventdata, handles, varargin)
-% This function has no output args, see OutputFcn.
-% hObject    handle to figure
-% eventdata  reserved - to be defined in a future version of MATLAB
-% handles    structure with handles and user data (see GUIDATA)
-% varargin   command line arguments to ui (see VARARGIN)
+    % This function has no output args, see OutputFcn.
+    % hObject    handle to figure
+    % eventdata  reserved - to be defined in a future version of MATLAB
+    % handles    structure with handles and user data (see GUIDATA)
+    % varargin   command line arguments to ui (see VARARGIN)
 
-% Choose default command line output for ui
-handles.output = hObject;
+    % Choose default command line output for ui
+    handles.output = hObject;
 
-% Update handles structure
-guidata(hObject, handles);
+    % Update handles structure
+    guidata(hObject, handles);
 
-% UIWAIT makes ui wait for user response (see UIRESUME)
-% uiwait(handles.figure1);
+    % UIWAIT makes ui wait for user response (see UIRESUME)
+    % uiwait(handles.figure1);
+
+    uiCallbacks = evalin('base', 'uiCallbacks');
+
+    % run the associated function
+    uiCallbacks.onload(hObject, eventdata, handles);
 
 
 % --- Outputs from this function are returned to the command line.
