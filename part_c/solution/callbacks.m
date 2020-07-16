@@ -6,6 +6,8 @@ uiCallbacks.simulate = @simulate;
 
 function [] = setup()
     ui;
+    
+    home();
 end
 
 function [] = calculate(hObject, eventdata, handles)
