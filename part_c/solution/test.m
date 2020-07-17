@@ -1,10 +1,10 @@
 Wstart = [-1180 -260 10 90 0 0].';
 Wend = [-471 -782.73 201.03 -179.88 -24.48 -158].';
-Qstart = [RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361)].';
-
+% Qstart = [RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361)].';
+Qstart = [92,92,92,92,92,92].';
 % Qstart = backward(Wstart,Qstart);
 n = 1000;
-simulate(Wstart,Wend,n,Qstart);
+simulateRobo(Wstart,Wend,n,Qstart);
 % x = linspace(0,1,n);
 % A2 = Wstart + x.*(Wend - Wstart);
 % 

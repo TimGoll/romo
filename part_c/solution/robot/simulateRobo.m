@@ -1,4 +1,4 @@
-function simulate(Wstart,Wend,n,Qstart)
+function simulateRobo(Wstart,Wend,n,Qstart)
 
 
 
@@ -11,8 +11,12 @@ A2 = Wstart + x.*(Wend - Wstart);
         P = A2(:,i);
         Q = backward(P,Qstart);
         roboplot(Q);
+        xlim([-1 1]);
+        ylim([-1 1]);
+        zlim([-1 1]);
         drawnow;
         Qstart=Q;
+        
     end
 
 end

@@ -25,7 +25,7 @@ function p = forward(q)
 
     A06 = A01 * A12 * A23 * A34 * A45 * A56;
     
-    p(1:3,1) = GetPos(A06)';
+    p(1:3,1) = 1000*GetPos(A06)';
     p(4:6,1) = GetAng(A06)';
     
 end

@@ -119,11 +119,11 @@ function [] = simulate(hObject, eventdata, handles)
     [p_data2, p2_is_defined] = readData(handle_out_p);
     [q_data2, q2_is_defined] = readData(handle_out_q);
     
-    Qstart = [RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361)].';
+%     Qstart = [RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361)].';
 
     
     if p_is_defined
-        q_data = round(backward(p_data,Qstart), 2);
+        q_data = round(backward(p_data,q_data2), 2);
     elseif q_is_defined
         p_data = round(forward(q_data), 2);
     end
@@ -135,15 +135,11 @@ function [] = simulate(hObject, eventdata, handles)
     
     resetData(handle_in_p);
     resetData(handle_in_q);
-    Wstart = [-1180 -260 10 90 0 0].';
-    Wend = [-471 -782.73 201.03 -179.88 -24.48 -158].';
+%     p_data2 = [-1180 -260 10 90 0 0].';
+%     p_data = [-471 -782.73 201.03 -179.88 -24.48 -158].';
     axes(handles.axes1);
     n=1000;
-    disp(p_data2);
-    disp(p_data);
-    disp(n);
-    disp(Qstart);
-    simulate(Wstart,Wend,n,Qstart);
+    simulateRobo(p_data2,p_data,n,q_data2);
 end
 
 %% HELPER FUNCTIONS
