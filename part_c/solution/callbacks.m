@@ -51,9 +51,11 @@ function [] = calculate(hObject, eventdata, handles)
     % read data
     [p_data, p_is_defined] = readData(handle_in_p);
     [q_data, q_is_defined] = readData(handle_in_q);
+    
+    Qstart = [RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361)].';
 
     if p_is_defined
-        q_data = round(backward(p_data), 2);
+        q_data = round(backward(p_data,Qstart), 2);
     elseif q_is_defined
         p_data = round(forward(q_data), 2);
     end
@@ -73,7 +75,66 @@ function [] = home(hObject, eventdata, handles)
 end
 
 function [] = simulate(hObject, eventdata, handles)
-    disp("simulate todo");
+      handle_in_p = [
+        handles.in_x
+        handles.in_y
+        handles.in_z
+        handles.in_a
+        handles.in_b
+        handles.in_c
+    ];
+
+    handle_in_q = [
+        handles.in_q1
+        handles.in_q2
+        handles.in_q3
+        handles.in_q4
+        handles.in_q5
+        handles.in_q6
+    ];
+
+    handle_out_p = [
+        handles.out_x
+        handles.out_y
+        handles.out_z
+        handles.out_a
+        handles.out_b
+        handles.out_c
+    ];
+
+    handle_out_q = [
+        handles.out_q1
+        handles.out_q2
+        handles.out_q3
+        handles.out_q4
+        handles.out_q5
+        handles.out_q6
+    ];
+
+ % read data
+    [p_data1, p_is_defined] = readData(handle_in_p);
+    [q_data1, q_is_defined] = readData(handle_in_q);
+    [p_data2, p2_is_defined] = readData(handle_out_p);
+    [q_data2, q2_is_defined] = readData(handle_out_q);
+       
+    Qstart = [RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361)].';
+
+        
+    if p_is_defined
+        q_data1 = round(backward(p_data1,Qstart), 2);
+    elseif q_is_defined
+        p_data1 = round(forward(q_data1), 2);
+    end
+    
+    
+    setData(handle_out_p, p_data1);
+    setData(handle_out_q, q_data1);
+    
+    resetData(handle_in_p);
+    resetData(handle_in_q);
+    
+    axes(handles.axes1);
+    simulate(p_data2,p_data1,1000)
 end
 
 %% HELPER FUNCTIONS
