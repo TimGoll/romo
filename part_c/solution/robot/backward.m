@@ -1,4 +1,4 @@
-function [q] = backward(W)
+function [q] = backward(W,Qstart)
 
     %Denavit-Hartenberg Parameter
     DH = [
@@ -13,7 +13,7 @@ function [q] = backward(W)
     DH(:,[1 4]) = deg2rad(DH(:,[1 4])); %Umrechnung in rad
     DH(:,[2 3]) = DH(:,[2 3])./1000;    %Umrechnung in m
 
-    Qstart = [RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361)].';
+%     Qstart = [RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361)].';
     Qstart = deg2rad(Qstart);           %Umrechnung in rad
 
     Wsoll = W;
