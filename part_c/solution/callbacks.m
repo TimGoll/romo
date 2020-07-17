@@ -135,15 +135,15 @@ function [] = simulate(hObject, eventdata, handles)
     
     resetData(handle_in_p);
     resetData(handle_in_q);
-    p_data2 = [-1180 -260 10 90 0 0].';
-    p_data = [-471 -782.73 201.03 -179.88 -24.48 -158].';
+    Wstart = [-1180 -260 10 90 0 0].';
+    Wend = [-471 -782.73 201.03 -179.88 -24.48 -158].';
     axes(handles.axes1);
     n=1000;
     disp(p_data2);
     disp(p_data);
     disp(n);
     disp(Qstart);
-    simulate(p_data2,p_data,n,Qstart);
+    simulate(Wstart,Wend,n,Qstart);
 end
 
 %% HELPER FUNCTIONS
