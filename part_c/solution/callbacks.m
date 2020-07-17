@@ -15,6 +15,7 @@ end
 
 function [] = calculate(hObject, eventdata, handles)
     % set up handle arrays
+    setData([handles.simulation_progress], [""]);
     [handle_in_p, handle_in_q, handle_out_p, handle_out_q] = extractHandles(handles);
 
     % read data
@@ -46,6 +47,7 @@ end
 
 function [] = home(hObject, eventdata, handles)
     % set up handle arrays
+    setData([handles.simulation_progress], [""]);
     [handle_in_p, handle_in_q, handle_out_p, handle_out_q] = extractHandles(handles);
 
     q_data = zeros(6, 1);
@@ -92,7 +94,9 @@ function [] = simulate(hObject, eventdata, handles)
 %     p_data = [-471 -782.73 201.03 -179.88 -24.48 -158].';
     axes(handles.axes1);
     n=1000;
+    setData([handles.simulation_progress], ["simulation in progress"]);
     simulateRobo(p_data2,p_data,n,q_data2);
+    setData([handles.simulation_progress], ["simulation done"]);
 end
 
 %% HELPER FUNCTIONS

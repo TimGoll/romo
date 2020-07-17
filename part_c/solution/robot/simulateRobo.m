@@ -11,9 +11,6 @@ A2 = Wstart + x.*(Wend - Wstart);
         P = A2(:,i);
         Q = backward(P,Qstart);
         roboplot(Q);
-        xlim([-1 1]);
-        ylim([-1 1]);
-        zlim([-1 1]);
         drawnow;
         Qstart=Q;
         
