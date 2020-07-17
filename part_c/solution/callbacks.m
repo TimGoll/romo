@@ -51,9 +51,12 @@ function [] = calculate(hObject, eventdata, handles)
     % read data
     [p_data, p_is_defined] = readData(handle_in_p);
     [q_data, q_is_defined] = readData(handle_in_q);
+    
+    Qstart = [RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361), RandRange(1,361)].';
 
+    
     if p_is_defined
-        q_data = round(backward(p_data), 2);
+        q_data = round(backward(p_data,Qstart), 2);
     elseif q_is_defined
         p_data = round(forward(q_data), 2);
     end
