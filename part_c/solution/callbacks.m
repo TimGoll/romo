@@ -28,6 +28,10 @@ function [] = calculate(hObject, eventdata, handles)
         q_data = round(backward(p_data,Qstart), 2);
     elseif q_is_defined
         p_data = round(forward(q_data), 2);
+    else
+        home(hObject, eventdata, handles);
+        
+        return;
     end
     
     setData(handle_out_p, p_data);
