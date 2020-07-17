@@ -65,5 +65,6 @@ text(P5(1),P5(2),P5(3),'KS5');
 plotKS(A06);
 text(P6(1),P6(2),P6(3),'KS6');
 hold off;
+refresh
 
 end
